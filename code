@@ -1,0 +1,117 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Passenger {
+    int id;
+    String name;
+    int age;
+    String source;
+    String destination;
+
+    Passenger(int id, String name, int age, String source, String destination) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.source = source;
+        this.destination = destination;
+    }
+
+    void display() {
+        System.out.println("ID: " + id +
+                ", Name: " + name +
+                ", Age: " + age +
+                ", From: " + source +
+                ", To: " + destination);
+    }
+}
+
+public class RailwayReservationSystem {
+
+    static ArrayList<Passenger> passengers = new ArrayList<>();
+    static int seatLimit = 5;
+    static int idCounter = 1;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n--- Railway Reservation System ---");
+            System.out.println("1. Book Ticket");
+            System.out.println("2. Cancel Ticket");
+            System.out.println("3. View Tickets");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    bookTicket(sc);
+                    break;
+                case 2:
+                    cancelTicket(sc);
+                    break;
+                case 3:
+                    viewTickets();
+                    break;
+                case 4:
+                    System.out.println("Thank you for using Railway Reservation System");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+    static void bookTicket(Scanner sc) {
+        if (passengers.size() >= seatLimit) {
+            System.out.println("No seats available!");
+            return;
+        }
+
+        System.out.print("Enter Name: ");
+        sc.nextLine();
+        String name = sc.nextLine();
+
+        System.out.print("Enter Age: ");
+        int age = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Source: ");
+        String source = sc.nextLine();
+
+        System.out.print("Enter Destination: ");
+        String destination = sc.nextLine();
+
+        Passenger p = new Passenger(idCounter++, name, age, source, destination);
+        passengers.add(p);
+
+        System.out.println("Ticket booked successfully!");
+    }
+
+    static void cancelTicket(Scanner sc) {
+        System.out.print("Enter Passenger ID to cancel: ");
+        int id = sc.nextInt();
+
+        for (Passenger p : passengers) {
+            if (p.id == id) {
+                passengers.remove(p);
+                System.out.println("Ticket cancelled successfully!");
+                return;
+            }
+        }
+        System.out.println("Passenger ID not found!");
+    }
+
+    static void viewTickets() {
+        if (passengers.isEmpty()) {
+            System.out.println("No tickets booked.");
+            return;
+        }
+
+        System.out.println("\n--- Booked Tickets ---");
+        for (Passenger p : passengers) {
+            p.display();
+        }
+    }
+}
